@@ -2,5 +2,5 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    path("EntradaSalida-gamebar", views.index)
+    path('inicio', views.inicio , name="inicio")
 ]
