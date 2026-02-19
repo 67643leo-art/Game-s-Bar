@@ -21,7 +21,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     
     
-    #http://127.0.0.1:8000/pageEntradasSalidas/inicio
+    #http://127.0.0.1:8000/pageEntradasSalidas
     path('pageEntradasSalidas/' , include("EntradaSalidas.urls")),
     
     #http://127.0.0.1:8000/pageProductos/Productos-gamebar
