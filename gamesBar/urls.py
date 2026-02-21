@@ -24,10 +24,10 @@ urlpatterns = [
     #http://127.0.0.1:8000/pageEntradasSalidas
     path('pageEntradasSalidas/' , include("EntradaSalidas.urls")),
     
-    #http://127.0.0.1:8000/pageProductos/Productos-gamebar
+    #http://127.0.0.1:8000/pageProductos
     path('pageProductos/' , include("Producto.urls")),
 
-    #http://127.0.0.1:8000/pageProveedores/Proveedores-gamebar
+    #http://127.0.0.1:8000/pageProveedores
     path('pageProveedores/' , include("Proveedor.urls")),
         
     #http://127.0.0.1:8000/pageSolicitudProductos/Solicitud-Productos-gamebar
