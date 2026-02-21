@@ -30,15 +30,15 @@ urlpatterns = [
     #http://127.0.0.1:8000/pageProveedores
     path('pageProveedores/' , include("Proveedor.urls")),
         
-    #http://127.0.0.1:8000/pageSolicitudProductos/Solicitud-Productos-gamebar
+    #http://127.0.0.1:8000/pageSolicitudProductos
     path('pageSolicitudProductos/' , include("Solicitud_Productos.urls")),
     
-    #http://127.0.0.1:8000/pageReporte/Reporte-gamebar
+    #http://127.0.0.1:8000/pageReporte
     path('pageReporte/' , include("Reporte.urls")),
     
-    #http://127.0.0.1:8000/pageUsuario/Usuarios-gamebar
+    #http://127.0.0.1:8000/pageUsuario
     path('pageUsuario/' , include("Usuarios.urls")),
     
-    #http://127.0.0.1:8000/pageSucursal/Sucursal-gamebar
+    #http://127.0.0.1:8000/pageSucursal
     path('pageSucursal/' , include("Sucursal.urls")),
 ]

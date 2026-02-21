@@ -1,6 +1,6 @@
 from django.urls import path
-from . import views
+from .views import Usuario
 
 urlpatterns = [
-    path("Usuarios-gamebar", views.index)
+    path("", Usuario)
 ]
