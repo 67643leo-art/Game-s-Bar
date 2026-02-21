@@ -1,6 +1,6 @@
 from django.urls import path
-from . import views
+from .views import reporte
 
 urlpatterns = [
-    path("Reporte-gamebar", views.index)
+    path(" ", reporte)
 ]
