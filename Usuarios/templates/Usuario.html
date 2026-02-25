@@ -1,11 +1,146 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Entradas y salidas</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Game'sBar 🎮 - Login</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:linear-gradient(135deg,#0000ff,#00c2b8);
+}
+
+/* CONTENEDOR GENERAL */
+.login-wrapper{
+    text-align:center;
+    width:100%;
+    max-width:420px;
+}
+
+/* LOGO / TITULO */
+.brand{
+    color:white;
+    font-size:2rem;
+    font-weight:800;
+    margin-bottom:30px;
+    letter-spacing:1px;
+}
+
+/* TARJETA LOGIN */
+.login-card{
+    background:white;
+    padding:40px 35px;
+    border-radius:18px;
+    box-shadow:0 15px 35px rgba(0,0,0,0.25);
+    text-align:left;
+}
+
+.login-card h2{
+    text-align:center;
+    color:#0000cc;
+    margin-bottom:25px;
+}
+
+/* FORMULARIO */
+label{
+    display:block;
+    margin-bottom:8px;
+    font-weight:600;
+    color:#0000cc;
+}
+
+input{
+    width:100%;
+    padding:12px;
+    margin-bottom:20px;
+    border:1.5px solid #00c2b8;
+    border-radius:10px;
+    font-size:1rem;
+    transition:0.3s;
+}
+
+input:focus{
+    outline:none;
+    border-color:#00eeff;
+    box-shadow:0 0 6px rgba(0,0,255,0.3);
+}
+
+/* BOTON */
+button{
+    width:100%;
+    padding:12px;
+    background:#00c2b8;
+    border:none;
+    border-radius:12px;
+    color:white;
+    font-weight:700;
+    font-size:1rem;
+    cursor:pointer;
+    transition:0.3s;
+}
+
+button:hover{
+    background:#008f86;
+    transform:translateY(-2px);
+}
+
+/* LINK */
+.extra-links{
+    text-align:center;
+    margin-top:15px;
+    font-size:0.9rem;
+}
+
+.extra-links a{
+    text-decoration:none;
+    color:#0000cc;
+    font-weight:600;
+}
+
+.extra-links a:hover{
+    text-decoration:underline;
+}
+</style>
 </head>
+
 <body>
-    <p>Bienvenido a Game's Bar(Usuario), </p>
+
+<div class="login-wrapper">
+    
+    <div class="brand">
+        Game'sBar 🎮
+    </div>
+
+    <div class="login-card">
+        <h2>Bienvenido a Game'Sbar</h2>
+
+        <form action="dashboard.html" method="POST">
+            <label for="usuario">Usuario</label>
+            <input type="text" id="usuario" name="usuario" required>
+
+            <label for="password">Contraseña</label>
+            <input type="password" id="password" name="password" required>
+
+            <button type="submit">Ingresar</button>
+        </form>
+
+        <div class="extra-links">
+            <p><a href="#">¿Olvidaste tu contraseña?</a></p>
+        </div>
+    </div>
+
+</div>
+
 </body>
 </html>
