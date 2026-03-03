@@ -1,262 +1,300 @@
 <!doctype html>
 <html lang="es">
-<head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Game'sBar Admin 🎮 - Productos</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Game'sBar Admin 🎮 - Productos</title>
 
-<style>
-* { margin:0; padding:0; box-sizing:border-box; }
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
 
-body {
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-  background:#f5f9fc;
-  display:flex;
-  height:100vh;
-  overflow:hidden;
-}
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background: #f5f9fc;
+        display: flex;
+        height: 100vh;
+        overflow: hidden;
+      }
 
-/* SIDEBAR */
-.sidebar {
-  width:240px;
-  background:linear-gradient(180deg,#0000ff,#00c2b8);
-  color:white;
-  display:flex;
-  flex-direction:column;
-  padding-top:20px;
-}
+      /* SIDEBAR */
+      .sidebar {
+        width: 240px;
+        background: linear-gradient(180deg, #0000ff, #00c2b8);
+        color: white;
+        display: flex;
+        flex-direction: column;
+        padding-top: 20px;
+      }
 
-.sidebar h2 {
-  font-family:"Arial Black", Arial, sans-serif;
-  font-size:1.7rem;
-  text-align:center;
-  margin-bottom:30px;
-}
+      .sidebar h2 {
+        font-family: "Arial Black", Arial, sans-serif;
+        font-size: 1.7rem;
+        text-align: center;
+        margin-bottom: 30px;
+      }
 
-.nav-item {
-  padding:15px 25px;
-  cursor:pointer;
-  font-weight:600;
-  font-size:0.95rem;
-  transition:background 0.3s ease;
-}
+      .nav-item {
+        padding: 15px 25px;
+        cursor: pointer;
+        font-weight: 600;
+        font-size: 0.95rem;
+        transition: background 0.3s ease;
+      }
 
-.nav-item:hover,
-.nav-item.active {
-  background:#00b7a8;
-}
+      .nav-item:hover,
+      .nav-item.active {
+        background: #00b7a8;
+      }
 
-/* MAIN */
-.main-content {
-  flex-grow:1;
-  display:flex;
-  flex-direction:column;
-}
+      /* MAIN */
+      .main-content {
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+      }
 
-header {
-  background:linear-gradient(90deg,#0000ff,#00c2b8);
-  padding:18px 30px;
-  color:white;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  font-weight:700;
-  font-size:1.25rem;
-}
+      header {
+        background: linear-gradient(90deg, #0000ff, #00c2b8);
+        padding: 18px 30px;
+        color: white;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-weight: 700;
+        font-size: 1.25rem;
+      }
 
-section {
-  padding:30px;
-  overflow-y:auto;
-  flex-grow:1;
-}
+      section {
+        padding: 30px;
+        overflow-y: auto;
+        flex-grow: 1;
+      }
 
-h2 {
-  color:#333;
-  margin-bottom:20px;
-}
+      h2 {
+        color: #333;
+        margin-bottom: 20px;
+      }
 
-/* CARD */
-.card {
-  background:white;
-  padding:25px;
-  border-radius:12px;
-  box-shadow:0 3px 10px rgba(0,0,0,0.08);
-}
+      /* CARD */
+      .card {
+        background: white;
+        padding: 25px;
+        border-radius: 12px;
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+      }
 
-/* BOTONES */
-.btn {
-  background:#0000ff;
-  color:white;
-  border:none;
-  padding:8px 14px;
-  border-radius:8px;
-  cursor:pointer;
-  font-weight:600;
-  transition:.3s;
-}
+      /* BOTONES */
+      .btn {
+        background: #0000ff;
+        color: white;
+        border: none;
+        padding: 8px 14px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: 600;
+        transition: 0.3s;
+      }
 
-.btn:hover { background:#00b7a8; }
+      .btn:hover {
+        background: #00b7a8;
+      }
 
-/* TABLA */
-table {
-  width:100%;
-  border-collapse:collapse;
-  text-align:center;
-}
+      /* TABLA */
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        text-align: center;
+      }
 
-th, td {
-  padding:14px;
-  border-bottom:1px solid #ddd;
-  text-align:center;
-  vertical-align:middle;
-}
+      th,
+      td {
+        padding: 14px;
+        border-bottom: 1px solid #ddd;
+        text-align: center;
+        vertical-align: middle;
+      }
 
-th {
-  background:#f0f4f8;
-  font-weight:bold;
-}
+      th {
+        background: #f0f4f8;
+        font-weight: bold;
+      }
 
-tbody tr:hover {
-  background-color:#f9fcff;
-}
+      tbody tr:hover {
+        background-color: #f9fcff;
+      }
 
-/* MODAL */
-.modal {
-  display:none;
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,0.4);
-  justify-content:center;
-  align-items:center;
-}
+      /* MODAL */
+      .modal {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.4);
+        justify-content: center;
+        align-items: center;
+      }
 
-.modal-content {
-  background:white;
-  padding:25px;
-  border-radius:12px;
-  width:400px;
-  box-shadow:0 4px 12px rgba(0,0,0,0.2);
-}
+      .modal-content {
+        background: white;
+        padding: 25px;
+        border-radius: 12px;
+        width: 400px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+      }
 
-.modal-content input {
-  width:100%;
-  padding:8px;
-  margin:8px 0;
-}
-</style>
-</head>
+      .modal-content input {
+        width: 100%;
+        padding: 8px;
+        margin: 8px 0;
+      }
 
-<body>
+      .titulo_barra {
+        color: #ffffff;
+        margin-bottom: 20px;
+      }
+    </style>
+  </head>
 
-<nav class="sidebar">
-  <h2>Game'sBar</h2>
+  <body>
+    <nav class="sidebar">
+      <h2 class="titulo_barra">Game'sBar</h2>
 
-  <div class="nav-item" onclick="location.href='//127.0.0.1:8000/pageEntradas'">
-    Entradas y Salidas
-  </div>
+      <div
+        class="nav-item"
+        onclick="location.href = '//127.0.0.1:8000/pageEntradasSalidas'"
+      >
+        Entradas y Salidas
+      </div>
 
-  <div class="nav-item" onclick="location.href='//127.0.0.1:8000/pageProveedores'">
-    Proveedor
-  </div>
+      <div
+        class="nav-item"
+        onclick="location.href = '//127.0.0.1:8000/pageProveedores'"
+      >
+        Proveedor
+      </div>
 
-  <div class="nav-item active">
-    Producto
-  </div>
+      <div class="nav-item active">Producto</div>
 
-  <div class="nav-item" onclick="location.href='//127.0.0.1:8000/pageReporte'">
-    Reporte
-  </div>
+      <div
+        class="nav-item"
+        onclick="location.href = '//127.0.0.1:8000/pageReporte'"
+      >
+        Reporte
+      </div>
 
-  <div class="nav-item" onclick="location.href='//127.0.0.1:8000/pageUsuario'">
-    Usuarios
-  </div>
+      <div
+        class="nav-item"
+        onclick="location.href = '//127.0.0.1:8000/pageUsuario'"
+      >
+        Usuarios
+      </div>
 
-  <div class="nav-item" onclick="location.href='//127.0.0.1:8000/pageSucursal'">
-    Sucursal
-  </div>
-</nav>
+      <div
+        class="nav-item"
+        onclick="location.href = '//127.0.0.1:8000/pageSolicitudProductos'"
+      >
+        Solicitud de Productos
+      </div>
 
-<div class="main-content">
-<header>
-  Game'sBar 🎮 - Administración
-  <div>Hola, Admin</div>
-</header>
+      <div
+        class="nav-item"
+        onclick="location.href = '//127.0.0.1:8000/pageSucursal'"
+      >
+        Sucursal
+      </div>
+    </nav>
 
-<section>
-<h2>Gestión de Productos</h2>
+    <div class="main-content">
+      <header>
+        Game'sBar 🎮 - Administración
+        <div>Hola, Admin</div>
+      </header>
 
-<div class="card">
-<table>
-<thead>
-<tr>
-<th>ID Producto</th>
-<th>Nombre del Producto</th>
-<th>Cantidad</th>
-<th>Unidad de Medida</th>
-<th>ID Proveedor</th>
-<th>Acción</th>
-</tr>
-</thead>
+      <section>
+        <h2>Gestión de Productos</h2>
 
-<tbody id="tablaProductos">
-<tr>
-<td>1</td>
-<td>Control Xbox</td>
-<td>15</td>
-<td>Piezas</td>
-<td>1</td>
-<td>
-<button class="btn" onclick="editarProducto(this)">Editar</button>
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</section>
-</div>
+        <div class="card">
+          <table>
+            <thead>
+              <tr>
+                <th>ID Producto</th>
+                <th>Nombre del Producto</th>
+                <th>Cantidad</th>
+                <th>Unidad de Medida</th>
+                <th>ID Proveedor</th>
+                <th>Acción</th>
+              </tr>
+            </thead>
 
-<!-- MODAL SOLO PARA EDITAR -->
-<div class="modal" id="modal">
-<div class="modal-content">
-<h3>Editar Producto</h3>
+            <tbody id="tablaProductos">
+              <tr>
+                <td>1</td>
+                <td>Control Xbox</td>
+                <td>15</td>
+                <td>Piezas</td>
+                <td>1</td>
+                <td>
+                  <button class="btn" onclick="editarProducto(this)">
+                    Editar
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </div>
 
-<input type="text" id="nombre" placeholder="Nombre del producto">
-<input type="number" id="cantidad" placeholder="Cantidad">
-<input type="text" id="unidad" placeholder="Unidad de medida">
-<input type="number" id="proveedor" placeholder="ID Proveedor">
+    <!-- MODAL SOLO PARA EDITAR -->
+    <div class="modal" id="modal">
+      <div class="modal-content">
+        <h3>Editar Producto</h3>
 
-<button class="btn" onclick="guardarProducto()">Guardar Cambios</button>
-<button class="btn" style="background:#999;" onclick="cerrarModal()">Cancelar</button>
-</div>
-</div>
+        <input type="text" id="nombre" placeholder="Nombre del producto" />
+        <input type="number" id="cantidad" placeholder="Cantidad" />
+        <input type="text" id="unidad" placeholder="Unidad de medida" />
+        <input type="number" id="proveedor" placeholder="ID Proveedor" />
 
-<script>
-let filaActual = null;
+        <button class="btn" onclick="guardarProducto()">Guardar Cambios</button>
+        <button class="btn" style="background: #999" onclick="cerrarModal()">
+          Cancelar
+        </button>
+      </div>
+    </div>
 
-function editarProducto(boton){
-  filaActual = boton.parentElement.parentElement;
+    <script>
+      let filaActual = null;
 
-  document.getElementById("nombre").value=filaActual.cells[1].innerText;
-  document.getElementById("cantidad").value=filaActual.cells[2].innerText;
-  document.getElementById("unidad").value=filaActual.cells[3].innerText;
-  document.getElementById("proveedor").value=filaActual.cells[4].innerText;
+      function editarProducto(boton) {
+        filaActual = boton.parentElement.parentElement;
 
-  document.getElementById("modal").style.display="flex";
-}
+        document.getElementById("nombre").value = filaActual.cells[1].innerText;
+        document.getElementById("cantidad").value =
+          filaActual.cells[2].innerText;
+        document.getElementById("unidad").value = filaActual.cells[3].innerText;
+        document.getElementById("proveedor").value =
+          filaActual.cells[4].innerText;
 
-function cerrarModal(){
-  document.getElementById("modal").style.display="none";
-}
+        document.getElementById("modal").style.display = "flex";
+      }
 
-function guardarProducto(){
-  filaActual.cells[1].innerText=document.getElementById("nombre").value;
-  filaActual.cells[2].innerText=document.getElementById("cantidad").value;
-  filaActual.cells[3].innerText=document.getElementById("unidad").value;
-  filaActual.cells[4].innerText=document.getElementById("proveedor").value;
+      function cerrarModal() {
+        document.getElementById("modal").style.display = "none";
+      }
 
-  cerrarModal();
-}
-</script>
+      function guardarProducto() {
+        filaActual.cells[1].innerText = document.getElementById("nombre").value;
+        filaActual.cells[2].innerText =
+          document.getElementById("cantidad").value;
+        filaActual.cells[3].innerText = document.getElementById("unidad").value;
+        filaActual.cells[4].innerText =
+          document.getElementById("proveedor").value;
 
-</body>
+        cerrarModal();
+      }
+    </script>
+  </body>
 </html>
