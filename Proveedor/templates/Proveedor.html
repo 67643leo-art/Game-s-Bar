@@ -21,6 +21,7 @@
       }
 
       /* SIDEBAR */
+
       .sidebar {
         width: 240px;
         background: linear-gradient(180deg, #0000ff, #00c2b8);
@@ -51,6 +52,7 @@
       }
 
       /* MAIN */
+
       .main-content {
         flex-grow: 1;
         display: flex;
@@ -80,23 +82,56 @@
       }
 
       /* CARD */
+
       .card {
         background: white;
-        padding: 25px;
-        border-radius: 12px;
-        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+        padding: 35px;
+        border-radius: 14px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+        max-width: 500px;
+        margin: auto;
+        margin-bottom: 30px;
+      }
+
+      .card form {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .card label {
+        font-weight: 600;
+        color: #444;
+        margin-top: 12px;
+        font-size: 0.9rem;
+      }
+
+      .card input {
+        width: 100%;
+        padding: 10px;
+        margin-top: 6px;
+        border-radius: 8px;
+        border: 1px solid #ccc;
+        font-size: 0.9rem;
+        transition: 0.2s;
+      }
+
+      .card input:focus {
+        outline: none;
+        border-color: #00c2b8;
+        box-shadow: 0 0 4px rgba(0, 194, 184, 0.4);
       }
 
       /* BOTONES */
+
       .btn {
         background: #0000ff;
         color: white;
         border: none;
-        padding: 8px 14px;
+        padding: 10px;
         border-radius: 8px;
         cursor: pointer;
         font-weight: 600;
-        margin-right: 5px;
+        margin-top: 20px;
         transition: 0.3s;
       }
 
@@ -104,15 +139,15 @@
         background: #00b7a8;
       }
 
-      .btn-danger {
-        background: #d9534f;
-      }
-
-      .btn-danger:hover {
-        background: #c9302c;
-      }
-
       /* TABLA */
+
+      .table-card {
+        background: white;
+        padding: 25px;
+        border-radius: 12px;
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+      }
+
       table {
         width: 100%;
         border-collapse: collapse;
@@ -123,8 +158,6 @@
       td {
         padding: 14px;
         border-bottom: 1px solid #ddd;
-        text-align: center;
-        vertical-align: middle;
       }
 
       th {
@@ -133,31 +166,7 @@
       }
 
       tbody tr:hover {
-        background-color: #f9fcff;
-      }
-
-      /* MODAL */
-      .modal {
-        display: none;
-        position: fixed;
-        inset: 0;
-        background: rgba(0, 0, 0, 0.4);
-        justify-content: center;
-        align-items: center;
-      }
-
-      .modal-content {
-        background: white;
-        padding: 25px;
-        border-radius: 12px;
-        width: 350px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-      }
-
-      .modal-content input {
-        width: 100%;
-        padding: 8px;
-        margin: 10px 0;
+        background: #f9fcff;
       }
 
       .titulo_barra {
@@ -226,32 +235,69 @@
         <h2>Registrar Proveedor</h2>
 
         <div class="card">
-          <form action="/sumar_proveedor/" method="POST">
+          <form action="sumar_proveedor/" method="POST">
             {% csrf_token %}
 
+            <label>Empresa</label>
             <input
               type="text"
               name="empresa_prov"
-              placeholder="Empresa"
+              placeholder="Nombre de la empresa"
               required
             />
 
+            <label>Nombre del proveedor</label>
             <input
               type="text"
               name="nombre_prov"
-              placeholder="Nombre del proveedor"
+              placeholder="Nombre completo del proveedor"
               required
             />
 
+            <label>Contacto</label>
             <input
               type="text"
               name="contacto_prov"
-              placeholder="Contacto"
+              placeholder="Teléfono o correo"
               required
             />
 
-            <button class="btn" type="submit">Guardar Proveedor</button>
+            <button class="btn" type="submit">Agregar Proveedor</button>
           </form>
+        </div>
+
+        <h2>Proveedores Registrados</h2>
+
+        <div class="table-card">
+          <table>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Empresa</th>
+                <th>Proveedor</th>
+                <th>Contacto</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              {% for proveedor in proveedores %}
+
+              <tr>
+                <td>{{ proveedor.id }}</td>
+                <td>{{ proveedor.empresa_prov }}</td>
+                <td>{{ proveedor.nombre_prov }}</td>
+                <td>{{ proveedor.contacto_prov }}</td>
+              </tr>
+
+              {% empty %}
+
+              <tr>
+                <td colspan="4">No hay proveedores registrados</td>
+              </tr>
+
+              {% endfor %}
+            </tbody>
+          </table>
         </div>
       </section>
     </div>
