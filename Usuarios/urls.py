@@ -3,5 +3,7 @@ from .views import Usuario, login
 
 urlpatterns = [
     path("", Usuario),
+
     path("/login", login)
+
 ]
