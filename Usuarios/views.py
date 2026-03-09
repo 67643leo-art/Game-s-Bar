@@ -1,27 +1,32 @@
 from django.shortcuts import render , redirect
 from .models import usuario
 # Create your views here.
-def Usuario (request):
+def pageUsuario (request):
     return render(request,"Usuario.html")
 
-def login(request):
+def ingresar_pagina(request):
 
     if request.method == "POST":
 
-        usuario = request.POST['usuario']
-        contrasena = request.POST['contrasena']
+        n_usuario = request.POST['usuario']
+        password = request.POST['password']
 
         try:
-            user = Usuario.objects.get(
-                nUsuario=usuario,
-                contrasena=contrasena
+            usuario.objects.get(
+                nUsuario=n_usuario,
+                contrasena=password
+                
             )
 
-            return redirect('/inicio/')
+            return redirect('/pageEntradasSalidas/')
 
-        except Usuario.DoesNotExist:
-            return render(request,'login.html',{
+        except usuario.DoesNotExist:
+
+            return render(request, 'Usuario.html', {
                 'error': 'Usuario o contraseña incorrectos'
             })
+    
+    print(usuario)
+    print(password)        
 
-    return render(request,'login.html')
+    return render(request, 'Usuario.html')

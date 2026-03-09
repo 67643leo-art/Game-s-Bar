@@ -223,149 +223,37 @@
       </header>
 
       <section>
-        <h2>Gestión de Proveedores</h2>
-
-        <button class="btn" onclick="abrirModal()">+ Agregar Proveedor</button>
+        <h2>Registrar Proveedor</h2>
 
         <div class="card">
-          <table>
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>Nombre</th>
-                <th>Contacto</th>
-                <th>Acciones</th>
-              </tr>
-            </thead>
+          <form action="/sumar_proveedor/" method="POST">
+            {% csrf_token %}
 
-            <tbody id="tablaProveedores">
-              <tr>
-                <td>1</td>
-                <td>Xbox</td>
-                <td>contacto@xbox.com</td>
-                <td>
-                  <button class="btn" onclick="editarProveedor(this)">
-                    Editar
-                  </button>
-                  <button
-                    class="btn btn-danger"
-                    onclick="eliminarProveedor(this)"
-                  >
-                    Eliminar
-                  </button>
-                </td>
-              </tr>
+            <input
+              type="text"
+              name="empresa_prov"
+              placeholder="Empresa"
+              required
+            />
 
-              <tr>
-                <td>2</td>
-                <td>PlayStation</td>
-                <td>contacto@playstation.com</td>
-                <td>
-                  <button class="btn" onclick="editarProveedor(this)">
-                    Editar
-                  </button>
-                  <button
-                    class="btn btn-danger"
-                    onclick="eliminarProveedor(this)"
-                  >
-                    Eliminar
-                  </button>
-                </td>
-              </tr>
+            <input
+              type="text"
+              name="nombre_prov"
+              placeholder="Nombre del proveedor"
+              required
+            />
 
-              <tr>
-                <td>3</td>
-                <td>Nintendo</td>
-                <td>contacto@nintendo.com</td>
-                <td>
-                  <button class="btn" onclick="editarProveedor(this)">
-                    Editar
-                  </button>
-                  <button
-                    class="btn btn-danger"
-                    onclick="eliminarProveedor(this)"
-                  >
-                    Eliminar
-                  </button>
-                </td>
-              </tr>
-            </tbody>
-          </table>
+            <input
+              type="text"
+              name="contacto_prov"
+              placeholder="Contacto"
+              required
+            />
+
+            <button class="btn" type="submit">Guardar Proveedor</button>
+          </form>
         </div>
       </section>
     </div>
-
-    <!-- MODAL -->
-    <div class="modal" id="modal">
-      <div class="modal-content">
-        <h3 id="tituloModal">Nuevo Proveedor</h3>
-        <input type="text" id="nombre" placeholder="Nombre" />
-        <input type="email" id="contacto" placeholder="Correo" />
-        <button class="btn" onclick="guardarProveedor()">Guardar</button>
-        <button class="btn btn-danger" onclick="cerrarModal()">Cancelar</button>
-      </div>
-    </div>
-
-    <script>
-      let filaActual = null;
-
-      function abrirModal() {
-        filaActual = null;
-        document.getElementById("tituloModal").innerText = "Nuevo Proveedor";
-        document.getElementById("nombre").value = "";
-        document.getElementById("contacto").value = "";
-        document.getElementById("modal").style.display = "flex";
-      }
-
-      function cerrarModal() {
-        document.getElementById("modal").style.display = "none";
-      }
-
-      function guardarProveedor() {
-        let nombre = document.getElementById("nombre").value;
-        let contacto = document.getElementById("contacto").value;
-
-        if (nombre === "" || contacto === "") {
-          alert("Completa todos los campos");
-          return;
-        }
-
-        if (filaActual) {
-          filaActual.cells[1].innerText = nombre;
-          filaActual.cells[2].innerText = contacto;
-        } else {
-          let tabla = document.getElementById("tablaProveedores");
-          let id = tabla.rows.length + 1;
-
-          let nuevaFila = tabla.insertRow();
-          nuevaFila.innerHTML = `
-      <td>${id}</td>
-      <td>${nombre}</td>
-      <td>${contacto}</td>
-      <td>
-        <button class="btn" onclick="editarProveedor(this)">Editar</button>
-        <button class="btn btn-danger" onclick="eliminarProveedor(this)">Eliminar</button>
-      </td>
-    `;
-        }
-
-        cerrarModal();
-      }
-
-      function editarProveedor(boton) {
-        filaActual = boton.parentElement.parentElement;
-        document.getElementById("tituloModal").innerText = "Editar Proveedor";
-        document.getElementById("nombre").value = filaActual.cells[1].innerText;
-        document.getElementById("contacto").value =
-          filaActual.cells[2].innerText;
-        document.getElementById("modal").style.display = "flex";
-      }
-
-      function eliminarProveedor(boton) {
-        if (confirm("¿Seguro que deseas eliminar este proveedor?")) {
-          boton.parentElement.parentElement.remove();
-        }
-      }
-    </script>
   </body>
 </html>
