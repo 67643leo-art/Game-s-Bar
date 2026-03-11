@@ -49,8 +49,8 @@ def agregar_entrada(request):
 
     return redirect("/pageEntradasSalidas/")
 
-
-def actualizar_entrada(request, id):
+    """
+    def actualizar_entrada(request, id):
 
     entrada = Entrada.objects.get(id=id)
 
@@ -72,3 +72,8 @@ def actualizar_entrada(request, id):
         "entrada": entrada,
         "entradas": Entrada.objects.all()
     })
+
+    
+    
+    
+    """
