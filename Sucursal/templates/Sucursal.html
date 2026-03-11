@@ -2,9 +2,8 @@
 <html lang="es">
 
 <head>
-
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <title>Game'sBar Admin - Sucursales 🎮</title>
 
@@ -100,7 +99,7 @@
     .table-container {
       background: white;
       border-radius: 12px;
-      box-shadow: 0 3px 8px rgba(0, 0, 0, .1);
+      box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
     }
 
     table {
@@ -151,7 +150,7 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background: rgba(0, 0, 0, .5);
+      background: rgba(0, 0, 0, 0.5);
       justify-content: center;
       align-items: center;
     }
@@ -187,67 +186,56 @@
       font-size: 18px;
     }
   </style>
-
 </head>
 
 <body>
-
   <nav class="sidebar">
-
     <h2>Game'sBar</h2>
 
-    <div class="nav-item" onclick="location.href='//127.0.0.1:8000/pageEntradasSalidas'">
+    <div class="nav-item" onclick="location.href = '//127.0.0.1:8000/pageEntradasSalidas'">
       Entradas y Salidas
     </div>
 
-    <div class="nav-item" onclick="location.href='//127.0.0.1:8000/pageProveedores'">
+    <div class="nav-item" onclick="location.href = '//127.0.0.1:8000/pageProveedores'">
       Proveedor
     </div>
 
-    <div class="nav-item" onclick="location.href='//127.0.0.1:8000/pageProductos'">
+    <div class="nav-item" onclick="location.href = '//127.0.0.1:8000/pageProductos'">
       Producto
     </div>
 
-    <div class="nav-item" onclick="location.href='//127.0.0.1:8000/pageReporte'">
+    <div class="nav-item" onclick="location.href = '//127.0.0.1:8000/pageReporte'">
       Reporte
     </div>
 
-    <div class="nav-item" onclick="location.href='//127.0.0.1:8000/pageUsuario'">
+    <div class="nav-item" onclick="location.href = '//127.0.0.1:8000/pageUsuario'">
       Usuarios
     </div>
 
-    <div class="nav-item" onclick="location.href='//127.0.0.1:8000/pageSolicitudProductos'">
+    <div class="nav-item" onclick="location.href = '//127.0.0.1:8000/pageSolicitudProductos'">
       Solicitud de Productos
     </div>
 
-    <div class="nav-item active">
-      Sucursal
-    </div>
+    <div class="nav-item active">Sucursal</div>
   </nav>
 
   <div class="main-content">
-
     <header>
       Game'sBar 🎮 - Administración de Sucursales
       <div>Hola Admin</div>
     </header>
 
     <section>
-
       <h2 class="section-title">🏢 Sucursales</h2>
 
       <div class="action-bar">
-
         <button class="btn-add" onclick="abrirModalCrear()">
           ➕ Agregar Sucursal
         </button>
-
       </div>
 
       <div class="table-container">
-
         <table>
-
           <thead>
             <tr>
               <th>ID</th>
@@ -264,11 +252,9 @@
           </thead>
 
           <tbody>
-
             {% for sucursal in sucursales %}
 
             <tr>
-
               <td>{{ sucursal.id }}</td>
               <td>{{ sucursal.nombre }}</td>
               <td>{{ sucursal.direccion }}</td>
@@ -280,9 +266,7 @@
               <td>{{ sucursal.estado }}</td>
 
               <td>
-
                 <div class="action-buttons">
-
                   <button class="btn-edit" onclick="abrirModalEditar(
 '{{ sucursal.id }}',
 '{{ sucursal.nombre }}',
@@ -300,52 +284,41 @@
                   <a href="/pageSucursal/eliminarSucursal/{{ sucursal.id }}/">
                     <button class="btn-delete">Eliminar</button>
                   </a>
-
                 </div>
-
               </td>
-
             </tr>
 
             {% endfor %}
-
           </tbody>
-
         </table>
-
       </div>
-
     </section>
-
   </div>
 
   <!-- MODAL CREAR -->
 
   <div id="modalCrear" class="modal">
-
     <div class="modal-content">
-
       <span class="close" onclick="cerrarModalCrear()">✖</span>
 
       <h3>Crear Sucursal</h3>
 
       <form method="POST" action="/pageSucursal/crearSucursal/">
-
         {% csrf_token %}
 
-        <input type="text" name="nombre" placeholder="Nombre">
+        <input type="text" name="nombre" placeholder="Nombre" />
 
-        <input type="text" name="direccion" placeholder="Dirección">
+        <input type="text" name="direccion" placeholder="Dirección" />
 
-        <input type="text" name="ciudad" placeholder="Ciudad">
+        <input type="text" name="ciudad" placeholder="Ciudad" />
 
-        <input type="text" name="telefono" placeholder="Teléfono">
+        <input type="text" name="telefono" placeholder="Teléfono" />
 
-        <input type="text" name="encargado" placeholder="Encargado">
+        <input type="text" name="encargado" placeholder="Encargado" />
 
-        <input type="email" name="email" placeholder="Correo electrónico">
+        <input type="email" name="email" placeholder="Correo electrónico" />
 
-        <input type="text" name="horario" placeholder="Horario">
+        <input type="text" name="horario" placeholder="Horario" />
 
         <select name="estado">
           <option>Activo</option>
@@ -353,34 +326,28 @@
         </select>
 
         <button type="submit">Guardar</button>
-
       </form>
-
     </div>
-
   </div>
 
   <!-- MODAL EDITAR -->
 
   <div id="modalEditar" class="modal">
-
     <div class="modal-content">
-
       <span class="close" onclick="cerrarModalEditar()">✖</span>
 
       <h3>Editar Sucursal</h3>
 
       <form method="POST" id="formEditar">
-
         {% csrf_token %}
 
-        <input id="editNombre" name="nombre">
-        <input id="editDireccion" name="direccion">
-        <input id="editCiudad" name="ciudad">
-        <input id="editTelefono" name="telefono">
-        <input id="editEncargado" name="encargado">
-        <input id="editEmail" name="email">
-        <input id="editHorario" name="horario">
+        <input id="editNombre" name="nombre" />
+        <input id="editDireccion" name="direccion" />
+        <input id="editCiudad" name="ciudad" />
+        <input id="editTelefono" name="telefono" />
+        <input id="editEncargado" name="encargado" />
+        <input id="editEmail" name="email" />
+        <input id="editHorario" name="horario" />
 
         <select id="editEstado" name="estado">
           <option>Activo</option>
@@ -388,46 +355,49 @@
         </select>
 
         <button type="submit">Actualizar</button>
-
       </form>
-
     </div>
-
   </div>
 
   <script>
-
     function abrirModalCrear() {
-      document.getElementById("modalCrear").style.display = "flex"
+      document.getElementById("modalCrear").style.display = "flex";
     }
 
     function cerrarModalCrear() {
-      document.getElementById("modalCrear").style.display = "none"
+      document.getElementById("modalCrear").style.display = "none";
     }
 
-    function abrirModalEditar(id, nombre, direccion, ciudad, telefono, encargado, email, horario, estado) {
+    function abrirModalEditar(
+      id,
+      nombre,
+      direccion,
+      ciudad,
+      telefono,
+      encargado,
+      email,
+      horario,
+      estado,
+    ) {
+      document.getElementById("modalEditar").style.display = "flex";
 
-      document.getElementById("modalEditar").style.display = "flex"
+      document.getElementById("editNombre").value = nombre;
+      document.getElementById("editDireccion").value = direccion;
+      document.getElementById("editCiudad").value = ciudad;
+      document.getElementById("editTelefono").value = telefono;
+      document.getElementById("editEncargado").value = encargado;
+      document.getElementById("editEmail").value = email;
+      document.getElementById("editHorario").value = horario;
+      document.getElementById("editEstado").value = estado;
 
-      document.getElementById("editNombre").value = nombre
-      document.getElementById("editDireccion").value = direccion
-      document.getElementById("editCiudad").value = ciudad
-      document.getElementById("editTelefono").value = telefono
-      document.getElementById("editEncargado").value = encargado
-      document.getElementById("editEmail").value = email
-      document.getElementById("editHorario").value = horario
-      document.getElementById("editEstado").value = estado
-
-      document.getElementById("formEditar").action = "/pageSucursal/editarSucursal/" + id + "/"
-
+      document.getElementById("formEditar").action =
+        "/pageSucursal/editarSucursal/" + id + "/";
     }
 
     function cerrarModalEditar() {
-      document.getElementById("modalEditar").style.display = "none"
+      document.getElementById("modalEditar").style.display = "none";
     }
-
   </script>
-
 </body>
 
 </html>

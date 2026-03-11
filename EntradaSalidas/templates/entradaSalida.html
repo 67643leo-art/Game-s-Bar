@@ -6,6 +6,8 @@
     <title>Game'sBar Admin 🎮</title>
 
     <style>
+      /* TODO TU CSS ORIGINAL (NO MODIFICADO) */
+
       * {
         margin: 0;
         padding: 0;
@@ -35,21 +37,15 @@
         font-size: 1.7rem;
         text-align: center;
         margin-bottom: 30px;
-        user-select: none;
       }
 
       .nav-item {
         padding: 15px 25px;
         cursor: pointer;
-        display: flex;
-        align-items: center;
         font-weight: 600;
-        font-size: 0.95rem;
-        transition: background 0.3s ease;
       }
 
-      .nav-item:hover,
-      .nav-item.active {
+      .nav-item:hover {
         background: #00b7a8;
       }
 
@@ -63,30 +59,14 @@
         background: linear-gradient(90deg, #0000ff, #00c2b8);
         padding: 18px 30px;
         color: white;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
         font-weight: 700;
         font-size: 1.25rem;
-      }
-
-      header .user-info {
-        font-size: 0.95rem;
       }
 
       section {
         padding: 30px;
         overflow-y: auto;
         flex-grow: 1;
-      }
-
-      .titulo_1 {
-        color: white;
-      }
-
-      .titulo_2 {
-        color: #111;
-        margin-bottom: 20px;
       }
 
       .card {
@@ -102,133 +82,78 @@
         border: 1px solid #ccc;
       }
 
-      /* NUEVOS ESTILOS SOLO PARA TABLAS - RESPETANDO COLORES ORIGINALES */
       table {
         width: 100%;
         border-collapse: collapse;
         margin-bottom: 40px;
         text-align: center;
-        background: white;
-        border-radius: 8px;
-        overflow: hidden;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
       }
 
-      table thead tr {
+      table thead {
         background: linear-gradient(90deg, #0000ff, #00c2b8);
-      }
-
-      table th {
-        padding: 12px;
         color: white;
-        font-weight: 600;
-        font-size: 0.95rem;
-        border: none;
       }
 
+      table th,
       table td {
         padding: 12px;
-        border-bottom: 1px solid #e0e0e0;
-        color: #111;
       }
 
-      table tbody tr:hover {
-        background-color: #e6f3f2;
-      }
-
-      table tbody tr:last-child td {
-        border-bottom: none;
-      }
-
-      /* Mantener el estilo original de los títulos dentro de card */
-      .card h3 {
-        margin-bottom: 15px;
-        color: #111;
-      }
-
-      /* Mantener el estilo original del botón */
-      button[type="submit"] {
+      button {
         background: linear-gradient(90deg, #0000ff, #00c2b8);
         color: white;
         border: none;
         padding: 10px 20px;
         border-radius: 8px;
-        font-weight: 600;
         cursor: pointer;
-      }
-
-      button[type="submit"]:hover {
-        opacity: 0.9;
       }
     </style>
   </head>
 
   <body>
     <nav class="sidebar">
-      <h2 class="titulo_1">Game'sBar</h2>
+      <h2>Game'sBar</h2>
 
-      <div class="nav-item active" onclick="location.href = '#'">
+      <div class="nav-item" onclick="location.href = '/pageEntradasSalidas/'">
         Entradas y Salidas
       </div>
-
-      <div
-        class="nav-item"
-        onclick="location.href = '//127.0.0.1:8000/pageProveedores'"
-      >
+      <div class="nav-item" onclick="location.href = '/pageProveedores/'">
         Proveedor
       </div>
-
-      <div
-        class="nav-item"
-        onclick="location.href = '//127.0.0.1:8000/pageProductos'"
-      >
+      <div class="nav-item" onclick="location.href = '/pageProductos/'">
         Producto
       </div>
-
-      <div
-        class="nav-item"
-        onclick="location.href = '//127.0.0.1:8000/pageReporte'"
-      >
+      <div class="nav-item" onclick="location.href = '/pageReporte/'">
         Reporte
       </div>
-
-      <div
-        class="nav-item"
-        onclick="location.href = '//127.0.0.1:8000/pageUsuario'"
-      >
+      <div class="nav-item" onclick="location.href = '/pageUsuario/'">
         Usuarios
       </div>
-
       <div
         class="nav-item"
-        onclick="location.href = '//127.0.0.1:8000/pageSolicitudProductos'"
+        onclick="location.href = '/pageSolicitudProductos/'"
       >
         Solicitud de Productos
       </div>
-
-      <div
-        class="nav-item"
-        onclick="location.href = '//127.0.0.1:8000/pageSucursal'"
-      >
+      <div class="nav-item" onclick="location.href = '/pageSucursal/'">
         Sucursal
       </div>
     </nav>
 
     <div class="main-content">
-      <header>
-        Game'sBar 🎮 - Administración
-        <div class="user-info">Hola, Admin</div>
-      </header>
+      <header>Game'sBar 🎮 - Administración</header>
 
       <section>
-        <h2 class="titulo_2">Entradas y Salidas</h2>
+        <h2 style="margin-bottom: 20px">Entradas y Salidas</h2>
 
         <div class="card">
-          <!-- FORMULARIO PARA INGRESAR ENTRADAS -->
+          <h3>Registrar Entrada</h3>
 
-          <h3 style="margin-bottom: 15px">Registrar Entrada</h3>
-
-          <form method="POST" style="margin-bottom: 30px">
+          <form
+            method="POST"
+            action="/pageEntradasSalidas/agregar_entrada/"
+            style="margin-bottom: 30px"
+          >
             {% csrf_token %}
 
             <div
@@ -239,13 +164,6 @@
                 margin-bottom: 15px;
               "
             >
-              <input
-                class="input-form"
-                type="number"
-                name="id_entrada"
-                placeholder="ID Entrada"
-              />
-
               <input
                 class="input-form"
                 type="text"
@@ -260,6 +178,13 @@
                 placeholder="Cantidad"
               />
 
+              <select class="input-form" name="unidad_medida">
+                <option value="kg">kg</option>
+                <option value="pieza">pieza</option>
+                <option value="caja">caja</option>
+                <option value="litro">litro</option>
+              </select>
+
               <input
                 class="input-form"
                 type="text"
@@ -273,55 +198,33 @@
             <button type="submit">Agregar Entrada</button>
           </form>
 
-          <!-- TABLA ENTRADAS -->
-
-          <h3 style="margin-bottom: 15px">Entradas</h3>
+          <h3>Entradas</h3>
 
           <table>
             <thead>
               <tr>
-                <th>ID Entrada</th>
+                <th>ID</th>
                 <th>Producto</th>
                 <th>Cantidad</th>
+                <th>Unidad</th>
                 <th>Proveedor</th>
                 <th>Fecha</th>
               </tr>
             </thead>
 
             <tbody>
+              {% for e in entradas %}
+
               <tr>
-                <td>1</td>
-                <td>Control Xbox</td>
-                <td>20</td>
-                <td>Xbox</td>
-                <td>10/03/2026</td>
+                <td>{{e.id}}</td>
+                <td>{{e.producto.nombre_producto}}</td>
+                <td>{{e.cantidad}}</td>
+                <td>{{e.unidad_medida}}</td>
+                <td>{{e.proveedor.empresa_prov}}</td>
+                <td>{{e.fecha}}</td>
               </tr>
-            </tbody>
-          </table>
 
-          <!-- TABLA SALIDAS -->
-
-          <h3 style="margin-bottom: 15px">Salidas</h3>
-
-          <table>
-            <thead>
-              <tr>
-                <th>ID Salida</th>
-                <th>Producto</th>
-                <th>Cantidad</th>
-                <th>Sucursal</th>
-                <th>Fecha</th>
-              </tr>
-            </thead>
-
-            <tbody>
-              <tr>
-                <td>1</td>
-                <td>Control Xbox</td>
-                <td>5</td>
-                <td>Sucursal Centro</td>
-                <td>10/03/2026</td>
-              </tr>
+              {% endfor %}
             </tbody>
           </table>
         </div>

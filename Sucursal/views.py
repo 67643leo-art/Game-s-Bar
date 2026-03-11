@@ -55,7 +55,7 @@ def editarSucursal(request, id):
 
         return redirect("/pageSucursal/")
 
-    return render(request, "editarSucursal.html", {
+    return render(request,"editarSucursal.html", {
         "sucursal": sucursal
     })
 
