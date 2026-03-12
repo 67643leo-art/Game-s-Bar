@@ -445,7 +445,7 @@
           <h3 id="modalTitle">Agregar Nueva Sucursal</h3>
         </div>
         <div class="modal-body">
-          <form id="sucursalForm">
+          <form id="sucursalForm" onsubmit="event.preventDefault(); guardarSucursal();">
             <input type="hidden" id="sucursalId">
             
             <div class="form-group">
@@ -669,36 +669,12 @@
               horario: '10:00 AM - 2:00 AM',
               estado: 'Activo',
               empleados: 18
-            },
-            {
-              id: 6,
-              nombre: 'Game\'s Bar Interlomas',
-              direccion: 'Interlomas 890',
-              ciudad: 'Huixquilucan',
-              telefono: '55-4455-6677',
-              encargado: 'Laura Torres',
-              email: 'interlomas@gamesbar.com',
-              horario: '11:00 AM - 1:00 AM',
-              estado: 'Activo',
-              empleados: 14
-            },
-            {
-              id: 7,
-              nombre: 'Game\'s Bar Universidad',
-              direccion: 'Universidad 1234',
-              ciudad: 'Coyoacán',
-              telefono: '55-3322-1144',
-              encargado: 'Miguel Ángel',
-              email: 'universidad@gamesbar.com',
-              horario: '8:00 AM - 10:00 PM',
-              estado: 'Inactivo',
-              empleados: 10
             }
           ];
           
           mostrarTabla();
           mostrarLoading(false);
-        }, 800);
+        }, 500);
       }
 
       // Función para mostrar loading
@@ -753,7 +729,7 @@
                 <div class="action-buttons">
                   <button class="btn-view" onclick="verDetalles(${s.id})">👁️ Ver</button>
                   <button class="btn-edit" onclick="editarSucursal(${s.id})">✏️ Editar</button>
-                  <button class="btn-delete" onclick="abrirDeleteModal(${s.id}, '${s.nombre}')">🗑️ Eliminar</button>
+                  <button class="btn-delete" onclick="abrirDeleteModal(${s.id}, '${s.nombre.replace(/'/g, "\\'")}')">🗑️ Eliminar</button>
                 </div>
               </td>
             `;
@@ -775,10 +751,12 @@
           const btn = document.createElement('button');
           btn.className = `page-btn ${i === currentPage ? 'active' : ''}`;
           btn.textContent = i;
-          btn.onclick = () => {
-            currentPage = i;
-            mostrarTabla();
-          };
+          btn.onclick = (function(page) {
+            return function() {
+              currentPage = page;
+              mostrarTabla();
+            };
+          })(i);
           pagination.appendChild(btn);
         }
       }
@@ -831,6 +809,7 @@
               <p><strong>Email:</strong> ${sucursal.email || 'No especificado'}</p>
               <p><strong>Encargado:</strong> ${sucursal.encargado || 'No especificado'}</p>
               <p><strong>Horario:</strong> ${sucursal.horario || 'No especificado'}</p>
+              <p><strong>Empleados:</strong> ${sucursal.empleados || 0}</p>
               <p><strong>Estado:</strong> 
                 <span class="status-badge ${sucursal.estado === 'Activo' ? 'status-active' : 'status-inactive'}">
                   ${sucursal.estado}
@@ -871,11 +850,11 @@
             // Editar existente
             const index = sucursales.findIndex(s => s.id === parseInt(id));
             if (index !== -1) {
-              sucursales[index] = { ...sucursales[index], ...sucursalData };
+              sucursales[index] = { ...sucursales[index], ...sucursalData, id: parseInt(id) };
             }
           } else {
             // Agregar nuevo
-            const newId = Math.max(...sucursales.map(s => s.id)) + 1;
+            const newId = Math.max(...sucursales.map(s => s.id), 0) + 1;
             sucursales.push({ id: newId, ...sucursalData });
           }
 
@@ -926,6 +905,13 @@
           cerrarModal();
           cerrarDeleteModal();
           cerrarDetailModal();
+        }
+      });
+
+      // Permitir búsqueda con Enter
+      document.getElementById('searchInput').addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+          buscarSucursales();
         }
       });
     </script>
