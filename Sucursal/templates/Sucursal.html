@@ -196,26 +196,9 @@
       Entradas y Salidas
     </div>
 
-<<<<<<< HEAD
-    <!-- Modal para agregar/editar sucursal -->
-    <div class="modal" id="sucursalModal">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h3 id="modalTitle">Agregar Nueva Sucursal</h3>
-        </div>
-        <div class="modal-body">
-          <form id="sucursalForm" onsubmit="event.preventDefault(); guardarSucursal();">
-            <input type="hidden" id="sucursalId">
-            
-            <div class="form-group">
-              <label for="nombre">Nombre de la Sucursal *</label>
-              <input type="text" id="nombre" required placeholder="Ej: Sucursal Centro">
-            </div>
-=======
     <div class="nav-item" onclick="location.href = '//127.0.0.1:8000/pageProveedores'">
       Proveedor
     </div>
->>>>>>> bab294d71edd8fa96fbef62573f93678978f6ea2
 
     <div class="nav-item" onclick="location.href = '//127.0.0.1:8000/pageProductos'">
       Producto
@@ -282,196 +265,6 @@
               <td>{{ sucursal.horario }}</td>
               <td>{{ sucursal.estado }}</td>
 
-<<<<<<< HEAD
-    <div class="main-content">
-      <header>
-        Game'sBar 🎮 - Administración de Sucursales
-        <div class="user-info">Hola, Admin</div>
-      </header>
-
-      <section>
-        <h2 class="section-title">🏢 Sucursales</h2>
-
-        <!-- Barra de acciones -->
-        <div class="action-bar">
-          <div class="search-box">
-            <input type="text" id="searchInput" placeholder="Buscar sucursal por nombre, ciudad o dirección...">
-            <button onclick="buscarSucursales()">🔍 Buscar</button>
-          </div>
-          <button class="btn-add" onclick="abrirModalNuevo()">
-            ➕ Agregar Sucursal
-          </button>
-        </div>
-
-        <!-- Tabla de sucursales -->
-        <div class="table-container">
-          <table id="sucursalesTable">
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>Nombre</th>
-                <th>Dirección</th>
-                <th>Ciudad</th>
-                <th>Teléfono</th>
-                <th>Encargado</th>
-                <th>Estado</th>
-                <th>Acciones</th>
-              </tr>
-            </thead>
-            <tbody id="tableBody">
-              <!-- Se llena con JavaScript -->
-            </tbody>
-          </table>
-        </div>
-
-        <!-- Paginación -->
-        <div class="pagination" id="pagination">
-          <!-- Se llena con JavaScript -->
-        </div>
-      </section>
-    </div>
-
-    <script>
-      // Variables globales
-      let sucursales = [];
-      let currentPage = 1;
-      const itemsPerPage = 5;
-      let deleteId = null;
-
-      // Cargar datos al iniciar
-      document.addEventListener('DOMContentLoaded', function() {
-        cargarSucursales();
-      });
-
-      // Función para cargar sucursales (simulada)
-      function cargarSucursales() {
-        mostrarLoading(true);
-        
-        // Simulación de carga de datos
-        setTimeout(() => {
-          // Datos de ejemplo
-          sucursales = [
-            {
-              id: 1,
-              nombre: 'Game\'s Bar Centro',
-              direccion: 'Av. Reforma 123',
-              ciudad: 'Ciudad de México',
-              telefono: '55-1234-5678',
-              encargado: 'Juan Pérez',
-              email: 'centro@gamesbar.com',
-              horario: '10:00 AM - 2:00 AM',
-              estado: 'Activo',
-              empleados: 15
-            },
-            {
-              id: 2,
-              nombre: 'Game\'s Bar Norte',
-              direccion: 'Insurgentes Norte 456',
-              ciudad: 'Ciudad de México',
-              telefono: '55-8765-4321',
-              encargado: 'María García',
-              email: 'norte@gamesbar.com',
-              horario: '11:00 AM - 1:00 AM',
-              estado: 'Activo',
-              empleados: 12
-            },
-            {
-              id: 3,
-              nombre: 'Game\'s Bar Sur',
-              direccion: 'Tlalpan 789',
-              ciudad: 'Ciudad de México',
-              telefono: '55-2468-1357',
-              encargado: 'Carlos López',
-              email: 'sur@gamesbar.com',
-              horario: '12:00 PM - 12:00 AM',
-              estado: 'Inactivo',
-              empleados: 8
-            },
-            {
-              id: 4,
-              nombre: 'Game\'s Bar Santa Fe',
-              direccion: 'Vasco de Quiroga 234',
-              ciudad: 'Ciudad de México',
-              telefono: '55-1122-3344',
-              encargado: 'Ana Martínez',
-              email: 'santafe@gamesbar.com',
-              horario: '9:00 AM - 11:00 PM',
-              estado: 'Activo',
-              empleados: 20
-            },
-            {
-              id: 5,
-              nombre: 'Game\'s Bar Satélite',
-              direccion: 'Circuito Satélite 567',
-              ciudad: 'Naucalpan',
-              telefono: '55-9988-7766',
-              encargado: 'Roberto Sánchez',
-              email: 'satelite@gamesbar.com',
-              horario: '10:00 AM - 2:00 AM',
-              estado: 'Activo',
-              empleados: 18
-            }
-          ];
-          
-          mostrarTabla();
-          mostrarLoading(false);
-        }, 500);
-      }
-
-      // Función para mostrar loading
-      function mostrarLoading(mostrar) {
-        const loading = document.getElementById('loading');
-        if (mostrar) {
-          loading.classList.add('active');
-        } else {
-          loading.classList.remove('active');
-        }
-      }
-
-      // Función para mostrar la tabla con paginación
-      function mostrarTabla() {
-        const tbody = document.getElementById('tableBody');
-        const searchTerm = document.getElementById('searchInput').value.toLowerCase();
-        
-        let filteredSucursales = sucursales;
-        
-        if (searchTerm) {
-          filteredSucursales = sucursales.filter(s => 
-            s.nombre.toLowerCase().includes(searchTerm) ||
-            s.ciudad.toLowerCase().includes(searchTerm) ||
-            s.direccion.toLowerCase().includes(searchTerm)
-          );
-        }
-
-        const start = (currentPage - 1) * itemsPerPage;
-        const end = start + itemsPerPage;
-        const paginatedSucursales = filteredSucursales.slice(start, end);
-
-        tbody.innerHTML = '';
-        
-        if (paginatedSucursales.length === 0) {
-          tbody.innerHTML = '<tr><td colspan="8" style="text-align: center; padding: 30px;">No hay sucursales para mostrar</td></tr>';
-        } else {
-          paginatedSucursales.forEach(s => {
-            const row = document.createElement('tr');
-            row.innerHTML = `
-              <td>#${s.id}</td>
-              <td><strong>${s.nombre}</strong></td>
-              <td>${s.direccion}</td>
-              <td>${s.ciudad}</td>
-              <td>${s.telefono || 'N/A'}</td>
-              <td>${s.encargado || 'N/A'}</td>
-              <td>
-                <span class="status-badge ${s.estado === 'Activo' ? 'status-active' : 'status-inactive'}">
-                  ${s.estado}
-                </span>
-              </td>
-              <td>
-                <div class="action-buttons">
-                  <button class="btn-view" onclick="verDetalles(${s.id})">👁️ Ver</button>
-                  <button class="btn-edit" onclick="editarSucursal(${s.id})">✏️ Editar</button>
-                  <button class="btn-delete" onclick="abrirDeleteModal(${s.id}, '${s.nombre.replace(/'/g, "\\'")}')">🗑️ Eliminar</button>
-=======
               <td>
                 <div class="action-buttons">
                   <button class="btn-edit" onclick="abrirModalEditar(
@@ -491,7 +284,6 @@
                   <a href="/pageSucursal/eliminarSucursal/{{ sucursal.id }}/">
                     <button class="btn-delete">Eliminar</button>
                   </a>
->>>>>>> bab294d71edd8fa96fbef62573f93678978f6ea2
                 </div>
               </td>
             </tr>
@@ -503,30 +295,7 @@
     </section>
   </div>
 
-<<<<<<< HEAD
-      // Función para mostrar paginación
-      function mostrarPaginacion(totalItems) {
-        const totalPages = Math.ceil(totalItems / itemsPerPage);
-        const pagination = document.getElementById('pagination');
-        
-        pagination.innerHTML = '';
-        
-        for (let i = 1; i <= totalPages; i++) {
-          const btn = document.createElement('button');
-          btn.className = `page-btn ${i === currentPage ? 'active' : ''}`;
-          btn.textContent = i;
-          btn.onclick = (function(page) {
-            return function() {
-              currentPage = page;
-              mostrarTabla();
-            };
-          })(i);
-          pagination.appendChild(btn);
-        }
-      }
-=======
   <!-- MODAL CREAR -->
->>>>>>> bab294d71edd8fa96fbef62573f93678978f6ea2
 
   <div id="modalCrear" class="modal">
     <div class="modal-content">
@@ -537,57 +306,13 @@
       <form method="POST" action="/pageSucursal/crearSucursal/">
         {% csrf_token %}
 
-<<<<<<< HEAD
-      // Función para ver detalles
-      function verDetalles(id) {
-        const sucursal = sucursales.find(s => s.id === id);
-        if (sucursal) {
-          const detailContent = document.getElementById('detailContent');
-          detailContent.innerHTML = `
-            <div style="padding: 10px;">
-              <p><strong>ID:</strong> #${sucursal.id}</p>
-              <p><strong>Nombre:</strong> ${sucursal.nombre}</p>
-              <p><strong>Dirección:</strong> ${sucursal.direccion}</p>
-              <p><strong>Ciudad:</strong> ${sucursal.ciudad}</p>
-              <p><strong>Teléfono:</strong> ${sucursal.telefono || 'No especificado'}</p>
-              <p><strong>Email:</strong> ${sucursal.email || 'No especificado'}</p>
-              <p><strong>Encargado:</strong> ${sucursal.encargado || 'No especificado'}</p>
-              <p><strong>Horario:</strong> ${sucursal.horario || 'No especificado'}</p>
-              <p><strong>Empleados:</strong> ${sucursal.empleados || 0}</p>
-              <p><strong>Estado:</strong> 
-                <span class="status-badge ${sucursal.estado === 'Activo' ? 'status-active' : 'status-inactive'}">
-                  ${sucursal.estado}
-                </span>
-              </p>
-            </div>
-          `;
-          document.getElementById('detailModal').classList.add('active');
-        }
-      }
-=======
         <input type="text" name="nombre" placeholder="Nombre" />
->>>>>>> bab294d71edd8fa96fbef62573f93678978f6ea2
 
         <input type="text" name="direccion" placeholder="Dirección" />
 
         <input type="text" name="ciudad" placeholder="Ciudad" />
 
-<<<<<<< HEAD
-        setTimeout(() => {
-          if (id) {
-            // Editar existente
-            const index = sucursales.findIndex(s => s.id === parseInt(id));
-            if (index !== -1) {
-              sucursales[index] = { ...sucursales[index], ...sucursalData, id: parseInt(id) };
-            }
-          } else {
-            // Agregar nuevo
-            const newId = Math.max(...sucursales.map(s => s.id), 0) + 1;
-            sucursales.push({ id: newId, ...sucursalData });
-          }
-=======
         <input type="text" name="telefono" placeholder="Teléfono" />
->>>>>>> bab294d71edd8fa96fbef62573f93678978f6ea2
 
         <input type="text" name="encargado" placeholder="Encargado" />
 
@@ -607,26 +332,6 @@
 
   <!-- MODAL EDITAR -->
 
-<<<<<<< HEAD
-      // Cerrar modales con Escape
-      document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape') {
-          cerrarModal();
-          cerrarDeleteModal();
-          cerrarDetailModal();
-        }
-      });
-
-      // Permitir búsqueda con Enter
-      document.getElementById('searchInput').addEventListener('keypress', function(e) {
-        if (e.key === 'Enter') {
-          buscarSucursales();
-        }
-      });
-    </script>
-  </body>
-</html>
-=======
   <div id="modalEditar" class="modal">
     <div class="modal-content">
       <span class="close" onclick="cerrarModalEditar()">✖</span>
@@ -696,4 +401,3 @@
 </body>
 
 </html>
->>>>>>> bab294d71edd8fa96fbef62573f93678978f6ea2
