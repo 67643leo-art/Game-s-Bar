@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Game'sBar Admin - Detalle de Solicitud</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f9fc;
+            display: flex;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        .sidebar {
+            width: 240px;
+            background: linear-gradient(180deg, #0000ff, #00c2b8);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            padding-top: 20px;
+            flex-shrink: 0;
+        }
+
+        .sidebar h2 {
+            font-family: "Arial Black", Arial, sans-serif;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .nav-item {
+            padding: 15px 25px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .nav-item:hover {
+            background: #00b7a8;
+        }
+
+        .main-content {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
+        }
+
+        header {
+            background: linear-gradient(90deg, #0000ff, #00c2b8);
+            padding: 18px 30px;
+            color: white;
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+
+        section {
+            padding: 30px;
+            overflow-y: auto;
+            flex-grow: 1;
+        }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .btn-back {
+            display: inline-block;
+            text-decoration: none;
+            background: linear-gradient(90deg, #0000ff, #00c2b8);
+            color: white;
+            padding: 10px 16px;
+            border-radius: 8px;
+            font-weight: 600;
+        }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+            padding: 24px;
+            margin-bottom: 25px;
+        }
+
+        .meta {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 12px;
+            color: #335;
+            font-weight: 600;
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 650px;
+        }
+
+        th {
+            background: linear-gradient(90deg, #0000ff, #00c2b8);
+            color: white;
+            padding: 14px;
+            text-align: center;
+        }
+
+        td {
+            padding: 14px;
+            text-align: center;
+            border-bottom: 1px solid #eef3f7;
+        }
+
+        @media (max-width: 860px) {
+            body {
+                flex-direction: column;
+                overflow: auto;
+            }
+
+            .sidebar {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="sidebar">
+        <h2>Game'sBar</h2>
+
+        <div class="nav-item" onclick="location.href='/pageEntradasSalidas/'">
+            Entradas y Salidas
+        </div>
+        <div class="nav-item" onclick="location.href='/pageProveedores/'">
+            Proveedor
+        </div>
+        <div class="nav-item" onclick="location.href='/pageProductos/'">
+            Producto
+        </div>
+        <div class="nav-item" onclick="location.href='/pageReporte/'">
+            Reporte
+        </div>
+        <div class="nav-item" onclick="location.href='/pageUsuario/'">
+            Usuarios
+        </div>
+        <div class="nav-item" onclick="location.href='/pageSolicitudProductos/'">
+            Solicitud de Productos
+        </div>
+        <div class="nav-item" onclick="location.href='/pageSucursal/'">
+            Sucursal
+        </div>
+    </nav>
+
+    <div class="main-content">
+        <header>Game'sBar - Detalle de Solicitud</header>
+
+        <section>
+            <div class="page-header">
+                <h2>{{ solicitud.folio }}</h2>
+                <a class="btn-back" href="/pageSolicitudProductos/">Volver a solicitudes</a>
+            </div>
+
+            <div class="card">
+                <div class="meta">
+                    <div>Fecha: {{ solicitud.fecha }}</div>
+                    <div>Proveedor: {{ solicitud.proveedor.empresa_prov }}</div>
+                    <div>Estado: {{ solicitud.estado }}</div>
+                    <div>Observaciones: {{ solicitud.observaciones|default:"-" }}</div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3 style="margin-bottom: 15px;">Productos solicitados</h3>
+
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Producto</th>
+                                <th>Categoria</th>
+                                <th>Cantidad</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for detalle in solicitud.detalles.all %}
+                            <tr>
+                                <td>{{ detalle.nombre_producto }}</td>
+                                <td>{{ detalle.categoria }}</td>
+                                <td>{{ detalle.cantidad }}</td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="3">La solicitud no tiene productos registrados.</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+    </div>
+</body>
+
+</html>

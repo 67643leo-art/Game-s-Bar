@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Game'sBar Admin 🎮</title>
+    <title>Game'sBar Admin</title>
 
     <style>
         * {
@@ -29,6 +29,7 @@
             display: flex;
             flex-direction: column;
             padding-top: 20px;
+            flex-shrink: 0;
         }
 
         .sidebar h2 {
@@ -55,6 +56,8 @@
             flex-grow: 1;
             display: flex;
             flex-direction: column;
+            min-width: 0;
+            min-height: 0;
         }
 
         header {
@@ -71,6 +74,7 @@
             padding: 30px;
             overflow-y: auto;
             flex-grow: 1;
+            min-height: 0;
         }
 
         h2 {
@@ -91,8 +95,37 @@
             margin-bottom: 30px;
         }
 
+        .messages {
+            margin-bottom: 20px;
+        }
+
+        .message {
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .message.success {
+            background: #e8f8f2;
+            color: #0f5132;
+            border: 1px solid #badbcc;
+        }
+
+        .message.error {
+            background: #f8d7da;
+            color: #842029;
+            border: 1px solid #f5c2c7;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+
         .form-group {
-            margin-bottom: 18px;
             display: flex;
             flex-direction: column;
         }
@@ -112,7 +145,7 @@
 
         textarea {
             resize: vertical;
-            min-height: 80px;
+            min-height: 90px;
         }
 
         .section-divider {
@@ -123,63 +156,104 @@
             padding-bottom: 5px;
         }
 
-        .btn-primary {
-            background: linear-gradient(90deg, #0000ff, #00c2b8);
-            color: white;
-            padding: 10px 15px;
+        .btn-primary,
+        .btn-secondary,
+        .btn-link {
             border: none;
             border-radius: 8px;
             cursor: pointer;
             font-weight: bold;
-            margin-top: 10px;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-primary {
+            background: linear-gradient(90deg, #0000ff, #00c2b8);
+            color: white;
+            padding: 10px 15px;
         }
 
         .btn-secondary {
             background: #e0e0e0;
-            padding: 6px 10px;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
+            color: #111;
+            padding: 8px 12px;
+        }
+
+        .btn-link {
+            background: #eef7ff;
+            color: #111;
+            padding: 8px 12px;
+        }
+
+        .actions-row {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 18px;
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
             margin-top: 10px;
+            min-width: 760px;
         }
 
-        table th, table td {
+        table th,
+        table td {
             border: 1px solid #ddd;
-            padding: 8px;
+            padding: 10px;
+            text-align: center;
         }
 
         table th {
             background: #f0f8ff;
+        }
+
+        .product-row-actions {
+            white-space: nowrap;
+        }
+
+        @media (max-width: 860px) {
+            body {
+                flex-direction: column;
+                overflow: auto;
+            }
+
+            .sidebar {
+                width: 100%;
+            }
         }
     </style>
 </head>
 
 <body>
     <nav class="sidebar">
-        <h2 class = "titulo_barra">Game'sBar</h2>
+        <h2 class ="titulo_barra">Game'sBar</h2>
 
-        <div class="nav-item" onclick="location.href='//127.0.0.1:8000/pageEntradasSalidas'">
+        <div class="nav-item" onclick="location.href='/pageEntradasSalidas/'">
             Entradas y Salidas
         </div>
 
-        <div class="nav-item" onclick="location.href='//127.0.0.1:8000/pageProveedores'">
+        <div class="nav-item" onclick="location.href='/pageProveedores/'">
             Proveedor
         </div>
 
-        <div class="nav-item" onclick="location.href='//127.0.0.1:8000/pageProductos'">
+        <div class="nav-item" onclick="location.href='/pageProductos/'">
             Producto
         </div>
 
-        <div class="nav-item" onclick="location.href='//127.0.0.1:8000/pageReporte'">
+        <div class="nav-item" onclick="location.href='/pageReporte/'">
             Reporte
         </div>
 
-        <div class="nav-item" onclick="location.href='//127.0.0.1:8000/pageUsuario'">
+        <div class="nav-item" onclick="location.href='/pageUsuario/'">
             Usuarios
         </div>
 
@@ -187,114 +261,215 @@
             Solicitud de Productos
         </div>
 
-        <div class="nav-item" onclick="location.href='//127.0.0.1:8000/pageSucursal'">
+        <div class="nav-item" onclick="location.href='/pageSucursal/'">
             Sucursal
         </div>
     </nav>
 
     <div class="main-content">
         <header>
-            Game'sBar 🎮 - Administración
+            Game'sBar - Administracion
             <div>Hola, Admin</div>
         </header>
 
         <section>
+            {% if messages %}
+            <div class="messages">
+                {% for message in messages %}
+                <div class="message {{ message.tags|default:'success' }}">
+                    {{ message }}
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
 
-            <h2>Nueva Solicitud de Productos</h2>
+            <h2>{% if solicitud_editar %}Editar Solicitud de Productos{% else %}Nueva Solicitud de Productos{% endif %}</h2>
 
             <div class="card">
+                <form method="POST" action="{% if solicitud_editar %}/pageSolicitudProductos/actualizar/{{ solicitud_editar.id }}/{% else %}/pageSolicitudProductos/crear/{% endif %}">
+                    {% csrf_token %}
 
-                <div class="form-group">
-                    <label>Folio de Solicitud</label>
-                    <input type="text" value="SOL-20260302-4821" readonly>
-                </div>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Folio de Solicitud</label>
+                            <input type="text" name="folio" value="{{ form_data.folio }}" readonly>
+                        </div>
 
-                <div class="form-group">
-                    <label>Fecha</label>
-                    <input type="date">
-                </div>
+                        <div class="form-group">
+                            <label>Fecha</label>
+                            <input type="date" name="fecha" value="{{ form_data.fecha }}">
+                        </div>
 
-                <div class="form-group">
-                    <label>Proveedor</label>
-                    <select>
-                        <option>Seleccione proveedor</option>
-                        <option>Xbox</option>
-                        <option>PlayStation</option>
-                        <option>Nintendo</option>
-                    </select>
-                </div>
+                        <div class="form-group">
+                            <label>Proveedor</label>
+                            <select name="proveedor">
+                                <option value="">Seleccione proveedor</option>
+                                {% for proveedor in proveedores %}
+                                <option value="{{ proveedor.id }}" {% if form_data.proveedor_id|stringformat:"s" == proveedor.id|stringformat:"s" %}selected{% endif %}>
+                                    {{ proveedor.empresa_prov }}
+                                </option>
+                                {% endfor %}
+                            </select>
+                        </div>
 
-                <div class="section-divider">Productos a Solicitar</div>
+                        <div class="form-group">
+                            <label>Estado</label>
+                            <select name="estado">
+                                {% for estado in estado_opciones %}
+                                <option value="{{ estado }}" {% if form_data.estado == estado %}selected{% endif %}>
+                                    {{ estado }}
+                                </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
 
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Nombre del Producto</th>
-                            <th>Categoría</th>
-                            <th>Cantidad</th>
-                            <th>Acción</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><input type="text" placeholder="Ej. FIFA 26"></td>
-                            <td>
-                                <select>
-                                    <option>Videojuego</option>
-                                    <option>Consola</option>
-                                    <option>Control</option>
-                                    <option>Accesorio</option>
-                                </select>
-                            </td>
-                            <td><input type="number" min="1"></td>
-                            <td><button class="btn-secondary">Eliminar</button></td>
-                        </tr>
-                    </tbody>
-                </table>
+                    <div class="section-divider">Productos a Solicitar</div>
 
-                <button class="btn-secondary">Agregar Otro Producto</button>
+                    <div class="table-wrapper">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Nombre del Producto</th>
+                                    <th>Categoria</th>
+                                    <th>Cantidad</th>
+                                    <th>Accion</th>
+                                </tr>
+                            </thead>
+                            <tbody id="productos-body">
+                                {% for detalle in form_data.detalles %}
+                                <tr>
+                                    <td><input type="text" name="nombre_producto[]" value="{{ detalle.nombre_producto }}" placeholder="Ej. FIFA 26"></td>
+                                    <td>
+                                        <select name="categoria[]">
+                                            {% for categoria in categoria_opciones %}
+                                            <option value="{{ categoria }}" {% if detalle.categoria == categoria %}selected{% endif %}>
+                                                {{ categoria }}
+                                            </option>
+                                            {% endfor %}
+                                        </select>
+                                    </td>
+                                    <td><input type="number" name="cantidad[]" min="1" value="{{ detalle.cantidad }}"></td>
+                                    <td class="product-row-actions">
+                                        <button type="button" class="btn-secondary remove-row">Eliminar</button>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
 
-                <div class="form-group" style="margin-top:20px;">
-                    <label>Observaciones</label>
-                    <textarea placeholder="Notas adicionales sobre la solicitud..."></textarea>
-                </div>
+                    <div class="actions-row">
+                        <button type="button" class="btn-secondary" id="add-row">Agregar Otro Producto</button>
+                    </div>
 
-                <button class="btn-primary">Guardar Solicitud</button>
+                    <div class="form-group" style="margin-top:20px;">
+                        <label>Observaciones</label>
+                        <textarea name="observaciones" placeholder="Notas adicionales sobre la solicitud...">{{ form_data.observaciones }}</textarea>
+                    </div>
 
+                    <div class="actions-row">
+                        <button type="submit" class="btn-primary">
+                            {% if solicitud_editar %}Actualizar Solicitud{% else %}Guardar Solicitud{% endif %}
+                        </button>
+
+                        {% if solicitud_editar %}
+                        <a class="btn-link" href="/pageSolicitudProductos/">Cancelar edicion</a>
+                        {% endif %}
+                    </div>
+                </form>
             </div>
 
             <h2>Solicitudes Registradas</h2>
 
             <div class="card">
-
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Folio</th>
-                            <th>Fecha</th>
-                            <th>Proveedor</th>
-                            <th>Estado</th>
-                            <th>Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>SOL-20260301-1932</td>
-                            <td>01/03/2026</td>
-                            <td>Xbox</td>
-                            <td>Pendiente</td>
-                            <td>
-                                <button class="btn-secondary">Ver</button>
-                                <button class="btn-secondary">Editar</button>
-                                <button class="btn-secondary">Eliminar</button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Folio</th>
+                                <th>Fecha</th>
+                                <th>Proveedor</th>
+                                <th>Estado</th>
+                                <th>Productos</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for solicitud in solicitudes %}
+                            <tr>
+                                <td>{{ solicitud.folio }}</td>
+                                <td>{{ solicitud.fecha }}</td>
+                                <td>{{ solicitud.proveedor.empresa_prov }}</td>
+                                <td>{{ solicitud.estado }}</td>
+                                <td>{{ solicitud.detalles.count }}</td>
+                                <td>
+                                    <div class="actions-row">
+                                        <a class="btn-link" href="/pageSolicitudProductos/ver/{{ solicitud.id }}/">Ver</a>
+                                        <a class="btn-link" href="/pageSolicitudProductos/editar/{{ solicitud.id }}/">Editar</a>
+                                        <a class="btn-link" href="/pageSolicitudProductos/eliminar/{{ solicitud.id }}/">Eliminar</a>
+                                    </div>
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="6">No hay solicitudes registradas.</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
             </div>
-
         </section>
     </div>
+
+    <template id="producto-row-template">
+        <tr>
+            <td><input type="text" name="nombre_producto[]" placeholder="Ej. FIFA 26"></td>
+            <td>
+                <select name="categoria[]">
+                    {% for categoria in categoria_opciones %}
+                    <option value="{{ categoria }}">{{ categoria }}</option>
+                    {% endfor %}
+                </select>
+            </td>
+            <td><input type="number" name="cantidad[]" min="1"></td>
+            <td class="product-row-actions">
+                <button type="button" class="btn-secondary remove-row">Eliminar</button>
+            </td>
+        </tr>
+    </template>
+
+    <script>
+        const tbody = document.getElementById("productos-body");
+        const template = document.getElementById("producto-row-template");
+        const addRowButton = document.getElementById("add-row");
+
+        function addRow() {
+            const clone = template.content.cloneNode(true);
+            tbody.appendChild(clone);
+        }
+
+        function removeRow(button) {
+            const rows = tbody.querySelectorAll("tr");
+            if (rows.length === 1) {
+                rows[0].querySelector("input[name='nombre_producto[]']").value = "";
+                rows[0].querySelector("select[name='categoria[]']").value = "Videojuego";
+                rows[0].querySelector("input[name='cantidad[]']").value = "";
+                return;
+            }
+
+            button.closest("tr").remove();
+        }
+
+        addRowButton.addEventListener("click", addRow);
+
+        tbody.addEventListener("click", function (event) {
+            if (event.target.classList.contains("remove-row")) {
+                removeRow(event.target);
+            }
+        });
+    </script>
 </body>
+
 </html>
