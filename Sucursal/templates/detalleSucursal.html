@@ -1,0 +1,266 @@
+<!doctype html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Game'sBar Admin - Detalle de Sucursal</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      background: #f5f9fc;
+      display: flex;
+      min-height: 100vh;
+      overflow: hidden;
+    }
+
+    .sidebar {
+      width: 240px;
+      background: linear-gradient(180deg, #0000ff, #00c2b8);
+      color: white;
+      display: flex;
+      flex-direction: column;
+      padding-top: 20px;
+      flex-shrink: 0;
+    }
+
+    .sidebar h2 {
+      font-family: "Arial Black", Arial, sans-serif;
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .nav-item {
+      padding: 15px 25px;
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    .nav-item:hover {
+      background: #00b7a8;
+    }
+
+    .main-content {
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+    }
+
+    header {
+      background: linear-gradient(90deg, #0000ff, #00c2b8);
+      padding: 18px 30px;
+      color: white;
+      font-weight: 700;
+      font-size: 1.2rem;
+    }
+
+    section {
+      padding: 30px;
+      overflow-y: auto;
+      flex-grow: 1;
+    }
+
+    .page-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+
+    .page-header h2 {
+      font-size: 2rem;
+    }
+
+    .btn-back {
+      display: inline-block;
+      text-decoration: none;
+      background: linear-gradient(90deg, #0000ff, #00c2b8);
+      color: white;
+      padding: 10px 16px;
+      border-radius: 8px;
+      font-weight: 600;
+    }
+
+    .card {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+      padding: 24px;
+      margin-bottom: 25px;
+    }
+
+    .card h3 {
+      margin-bottom: 15px;
+    }
+
+    .meta {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 12px;
+      margin-bottom: 8px;
+      color: #335;
+      font-weight: 600;
+    }
+
+    .table-wrapper {
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 650px;
+    }
+
+    th {
+      background: linear-gradient(90deg, #0000ff, #00c2b8);
+      color: white;
+      padding: 14px;
+      text-align: center;
+    }
+
+    td {
+      padding: 14px;
+      text-align: center;
+      border-bottom: 1px solid #eef3f7;
+    }
+
+    @media (max-width: 860px) {
+      body {
+        flex-direction: column;
+        overflow: auto;
+      }
+
+      .sidebar {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <nav class="sidebar">
+    <h2>Game'sBar</h2>
+
+    <div class="nav-item" onclick="location.href = '/pageEntradasSalidas/'">
+      Entradas y Salidas
+    </div>
+    <div class="nav-item" onclick="location.href = '/pageProveedores/'">
+      Proveedor
+    </div>
+    <div class="nav-item" onclick="location.href = '/pageProductos/'">
+      Producto
+    </div>
+    <div class="nav-item" onclick="location.href = '/pageReporte/'">
+      Reporte
+    </div>
+    <div class="nav-item" onclick="location.href = '/pageUsuario/'">
+      Usuarios
+    </div>
+    <div class="nav-item" onclick="location.href = '/pageSolicitudProductos/'">
+      Solicitud de Productos
+    </div>
+    <div class="nav-item" onclick="location.href = '/pageSucursal/'">
+      Sucursal
+    </div>
+  </nav>
+
+  <div class="main-content">
+    <header>Game'sBar - Productos recibidos por sucursal</header>
+
+    <section>
+      <div class="page-header">
+        <h2>{{ sucursal.nombre }}</h2>
+        <a class="btn-back" href="/pageSucursal/">Volver a sucursales</a>
+      </div>
+
+      <div class="card">
+        <h3>Informacion general</h3>
+        <div class="meta">
+          <div>Direccion: {{ sucursal.direccion }}</div>
+          <div>Ciudad: {{ sucursal.ciudad }}</div>
+          <div>Encargado: {{ sucursal.encargado|default:"-" }}</div>
+          <div>Estado: {{ sucursal.estado }}</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>Resumen de productos recibidos</h3>
+
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Producto</th>
+                <th>Total recibido</th>
+                <th>Unidad</th>
+                <th>Ultima fecha</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              {% for producto in productos_recibidos %}
+              <tr>
+                <td>{{ producto.producto__nombre_producto }}</td>
+                <td>{{ producto.total_recibido }}</td>
+                <td>{{ producto.unidad_medida }}</td>
+                <td>{{ producto.ultima_fecha }}</td>
+              </tr>
+              {% empty %}
+              <tr>
+                <td colspan="4">Esta sucursal aun no tiene productos recibidos.</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>Historial de salidas registradas</h3>
+
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Producto</th>
+                <th>Cantidad</th>
+                <th>Unidad</th>
+                <th>Fecha</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              {% for salida in salidas %}
+              <tr>
+                <td>{{ salida.id }}</td>
+                <td>{{ salida.producto.nombre_producto }}</td>
+                <td>{{ salida.cantidad }}</td>
+                <td>{{ salida.unidad_medida }}</td>
+                <td>{{ salida.fecha }}</td>
+              </tr>
+              {% empty %}
+              <tr>
+                <td colspan="5">No hay salidas registradas para esta sucursal.</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  </div>
+</body>
+
+</html>

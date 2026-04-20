@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Game'sBar Admin 🎮</title>
+    <title>Game'sBar Admin</title>
 
     <style>
         * {
@@ -29,6 +29,7 @@
             display: flex;
             flex-direction: column;
             padding-top: 20px;
+            flex-shrink: 0;
         }
 
         .sidebar h2 {
@@ -58,6 +59,8 @@
             flex-grow: 1;
             display: flex;
             flex-direction: column;
+            min-width: 0;
+            min-height: 0;
         }
 
         header {
@@ -79,6 +82,7 @@
             padding: 30px;
             overflow-y: auto;
             flex-grow: 1;
+            min-height: 0;
         }
 
         h2 {
@@ -96,12 +100,7 @@
             padding: 30px;
             border-radius: 12px;
             box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
-            max-width: 600px;
-        }
-
-        .form-title {
-            margin-bottom: 25px;
-            color: #0000ff;
+            max-width: 700px;
         }
 
         .form-group {
@@ -122,15 +121,6 @@
             border-radius: 6px;
             border: 1px solid #ccc;
             font-size: 0.95rem;
-            transition: border 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .form-group input:focus,
-        .form-group select:focus,
-        .form-group textarea:focus {
-            border-color: #00c2b8;
-            outline: none;
-            box-shadow: 0 0 5px rgba(0, 194, 184, 0.4);
         }
 
         textarea {
@@ -154,6 +144,30 @@
             font-size: 0.9rem;
         }
 
+        .messages {
+            margin-bottom: 20px;
+            max-width: 700px;
+        }
+
+        .message {
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .message.success {
+            background: #e8f8f2;
+            color: #0f5132;
+            border: 1px solid #badbcc;
+        }
+
+        .message.error {
+            background: #f8d7da;
+            color: #842029;
+            border: 1px solid #f5c2c7;
+        }
+
         .btn-primary {
             background: linear-gradient(90deg, #0000ff, #00c2b8);
             color: white;
@@ -163,29 +177,23 @@
             cursor: pointer;
             font-weight: bold;
             font-size: 0.95rem;
-            transition: transform 0.2s ease, opacity 0.2s ease;
-        }
-
-        .btn-primary:hover {
-            transform: scale(1.03);
-            opacity: 0.9;
         }
     </style>
 </head>
 
 <body>
     <nav class="sidebar">
-        <h2 class="titulo_barra">Game'sBar</h2>
+        <h2 class = "titulo_barra">Game'sBar</h2>
 
-        <div class="nav-item" onclick="location.href='//127.0.0.1:8000/pageEntradasSalidas'">
+        <div class="nav-item" onclick="location.href='/pageEntradasSalidas/'">
             Entradas y Salidas
         </div>
 
-        <div class="nav-item" onclick="location.href='//127.0.0.1:8000/pageProveedores'">
+        <div class="nav-item" onclick="location.href='/pageProveedores/'">
             Proveedor
         </div>
 
-        <div class="nav-item" onclick="location.href='//127.0.0.1:8000/pageProductos'">
+        <div class="nav-item" onclick="location.href='/pageProductos/'">
             Producto
         </div>
 
@@ -193,34 +201,48 @@
             Reporte
         </div>
 
-        <div class="nav-item" onclick="location.href='//127.0.0.1:8000/pageUsuario'">
+        <div class="nav-item" onclick="location.href='/pageUsuario/'">
             Usuarios
         </div>
 
-        <div class="nav-item" onclick="location.href='//127.0.0.1:8000/pageSolicitudProductos'">
+        <div class="nav-item" onclick="location.href='/pageSolicitudProductos/'">
             Solicitud de Productos
         </div>
 
-        <div class="nav-item" onclick="location.href='//127.0.0.1:8000/pageSucursal'">
+        <div class="nav-item" onclick="location.href='/pageSucursal/'">
             Sucursal
         </div>
     </nav>
 
     <div class="main-content">
         <header>
-            Game'sBar 🎮 - Administración
+            Game'sBar - Administracion
             <div class="user-info">Hola, Admin</div>
         </header>
 
         <section>
             <h2>Generar Reporte de Inventario</h2>
 
+            {% if messages %}
+            <div class="messages">
+                {% for message in messages %}
+                <div class="message {{ message.tags|default:'success' }}">
+                    {{ message }}
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+
             <div class="card">
 
                 <div class="info-box">
-                    Este reporte generará el total de entradas desde proveedores,
-                    total de salidas hacia sucursales y el total de productos
-                    restantes en matriz correspondientes al período seleccionado.
+                    Este reporte genera el total de entradas desde proveedores, el total de salidas hacia sucursales
+                    y el stock acumulado en matriz al cierre del anio seleccionado.
+                    {% if anios_disponibles %}
+                    Anios con movimientos registrados: {{ anios_disponibles|join:", " }}.
+                    {% else %}
+                    Aun no hay movimientos registrados, pero puedes generar un archivo vacio del anio que indiques.
+                    {% endif %}
                 </div>
 
                 <form method="POST" action="/pageReporte/generar_reporte/">
@@ -237,6 +259,21 @@
                             <option value="">Seleccione formato</option>
                             <option value="pdf">PDF</option>
                             <option value="xlsx">XLSX (Excel)</option>
+                <form method="POST">
+                    {% csrf_token %}
+
+                    <div class="form-group">
+                        <label>Anio del Periodo</label>
+                        <input type="number" name="anio" min="2000" max="2100" value="{{ form_data.anio }}" placeholder="Ej. 2026">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Formato de Exportacion</label>
+                        <select name="formato">
+                            <option value="">Seleccione formato</option>
+                            <option value="pdf" {% if form_data.formato == "pdf" %}selected{% endif %}>PDF</option>
+                            <option value="xlsx" {% if form_data.formato == "xlsx" %}selected{% endif %}>XLSX</option>
+                            <option value="csv" {% if form_data.formato == "csv" %}selected{% endif %}>CSV</option>
                         </select>
                     </div>
 
@@ -244,6 +281,8 @@
                         <label>Nombre del Archivo</label>
                         <input type="text" name="nombre_archivo" maxlength="30"
                             placeholder="Ej. reporte_inventario_marzo_2026">
+                        <input type="text" name="nombre_archivo" maxlength="60" value="{{ form_data.nombre_archivo }}"
+                            placeholder="Ej. reporte_inventario_2026">
                     </div>
 
                     <div class="section-divider">Incidencias del Producto</div>
@@ -251,6 +290,7 @@
                     <div class="form-group">
                         <label>Detalle de Incidencia</label>
                         <textarea name="incidencias" placeholder="Describe cualquier producto dañado, incompleto o con anomalías detectadas durante el período..."></textarea>
+                        <textarea name="incidencias" placeholder="Describe cualquier producto danado, incompleto o con anomalias detectadas durante el periodo...">{{ form_data.incidencias }}</textarea>
                     </div>
 
                     <div class="section-divider">Observaciones Generales</div>
@@ -258,6 +298,7 @@
                     <div class="form-group">
                         <label>Notas adicionales</label>
                         <textarea name="observaciones" placeholder="Escribe observaciones adicionales relacionadas al inventario del período..."></textarea>
+                        <textarea name="observaciones" placeholder="Escribe observaciones adicionales relacionadas al inventario del periodo...">{{ form_data.observaciones }}</textarea>
                     </div>
 
                     <button type="submit" class="btn-primary">
@@ -270,4 +311,5 @@
         </section>
     </div>
 </body>
+
 </html>

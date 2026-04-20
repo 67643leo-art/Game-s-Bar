@@ -43,10 +43,10 @@ def generar_reporte(request):
 
         if formato == 'pdf':
             return generar_pdf(nombre_archivo, entradas, productos, total_entradas,
-                             total_productos, incidencias, observaciones)
+                            total_productos, incidencias, observaciones)
         else:
             return generar_excel(nombre_archivo, entradas, productos, total_entradas,
-                               total_productos, incidencias, observaciones)
+                            total_productos, incidencias, observaciones)
 
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=500)

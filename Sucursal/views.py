@@ -1,13 +1,19 @@
-from django.shortcuts import render, redirect, get_object_or_404
+from django.db.models import Max, Sum
+from django.shortcuts import get_object_or_404, redirect, render
+
+from EntradaSalidas.models import Salida
+
 from .models import Sucursal
+
 
 def pageSucursal(request):
 
-    sucursales = Sucursal.objects.all()
+    sucursales = Sucursal.objects.all().order_by('nombre')
 
     return render(request, "sucursal.html", {
         "sucursales": sucursales
     })
+
 
 def crearSucursal(request):
 
@@ -59,6 +65,7 @@ def editarSucursal(request, id):
         "sucursal": sucursal
     })
 
+
 def eliminarSucursal(request, id):
 
     sucursal = get_object_or_404(Sucursal, id=id)
@@ -66,3 +73,25 @@ def eliminarSucursal(request, id):
     sucursal.delete()
 
     return redirect("/pageSucursal/")
+
+
+def detalleSucursal(request, id):
+
+    sucursal = get_object_or_404(Sucursal, id=id)
+
+    salidas = Salida.objects.filter(sucursal=sucursal).select_related('producto').order_by('-fecha', '-id')
+
+    productos_recibidos = salidas.values(
+        'producto__id',
+        'producto__nombre_producto',
+        'unidad_medida'
+    ).annotate(
+        total_recibido=Sum('cantidad'),
+        ultima_fecha=Max('fecha')
+    ).order_by('producto__nombre_producto')
+
+    return render(request, "detalleSucursal.html", {
+        "sucursal": sucursal,
+        "salidas": salidas,
+        "productos_recibidos": productos_recibidos
+    })

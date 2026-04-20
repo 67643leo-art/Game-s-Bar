@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import pageSucursal,crearSucursal, editarSucursal, eliminarSucursal
+from .views import crearSucursal, detalleSucursal, editarSucursal, eliminarSucursal, pageSucursal
 
 urlpatterns = [
 
@@ -10,5 +10,7 @@ urlpatterns = [
     path("editarSucursal/<int:id>/",editarSucursal),
 
     path("eliminarSucursal/<int:id>/",eliminarSucursal),
+
+    path("detalleSucursal/<int:id>/", detalleSucursal),
 
 ]

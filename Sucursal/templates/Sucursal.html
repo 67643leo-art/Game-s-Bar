@@ -135,10 +135,24 @@
 
     .btn-delete {
       background: #f8d7da;
-      border: none;
       padding: 6px 12px;
       border-radius: 4px;
       cursor: pointer;
+      color: #111;
+    }
+
+    .btn-view {
+      background: #d1ecf1;
+      padding: 6px 12px;
+      border-radius: 4px;
+      cursor: pointer;
+      color: #111;
+    }
+
+    .action-buttons a {
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
     }
 
     /* MODAL */
@@ -267,6 +281,10 @@
 
               <td>
                 <div class="action-buttons">
+                  <a href="/pageSucursal/detalleSucursal/{{ sucursal.id }}/" class="btn-view">
+                    Ver productos
+                  </a>
+
                   <button class="btn-edit" onclick="abrirModalEditar(
 '{{ sucursal.id }}',
 '{{ sucursal.nombre }}',
@@ -281,8 +299,8 @@
                     Editar
                   </button>
 
-                  <a href="/pageSucursal/eliminarSucursal/{{ sucursal.id }}/">
-                    <button class="btn-delete">Eliminar</button>
+                  <a href="/pageSucursal/eliminarSucursal/{{ sucursal.id }}/" class="btn-delete">
+                    Eliminar
                   </a>
                 </div>
               </td>
