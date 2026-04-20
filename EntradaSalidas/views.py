@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect
+from django.http import JsonResponse
 from .models import Entrada
 from Producto.models import Producto_gb
 from Proveedor.models import Proveedor_pxn
@@ -13,6 +14,22 @@ def inicio(request):
         'entradas': entradas,
         'proveedores': proveedores
     })
+
+
+def buscar_productos(request):
+    """Busca productos por letra o texto"""
+    q = request.GET.get('q', '').strip()
+    
+    if len(q) < 1:
+        return JsonResponse([])
+    
+    # Buscar productos que contengan la letra/texto (case-insensitive)
+    productos = Producto_gb.objects.filter(
+        nombre_producto__icontains=q
+    ).values_list('nombre_producto', flat=True).distinct()
+    
+    # Convertir a lista y retornar como JSON
+    return JsonResponse(list(productos), safe=False)
 
 
 def agregar_entrada(request):
@@ -47,6 +64,22 @@ def agregar_entrada(request):
         )
 
     return redirect("/pageEntradasSalidas/")
+
+
+def buscar_productos(request):
+    """
+    Vista para autocompletado de productos
+    """
+    query = request.GET.get('q', '').strip()
+
+    if len(query) >= 1:
+        productos = Producto_gb.objects.filter(
+            nombre_producto__icontains=query
+        ).values_list('nombre_producto', flat=True).distinct()[:10]  # Limitar a 10 resultados
+    else:
+        productos = []
+
+    return JsonResponse(list(productos), safe=False)
 
     """
     def actualizar_entrada(request, id):

@@ -107,6 +107,56 @@
         border-radius: 8px;
         cursor: pointer;
       }
+
+      /* Estilos para autocompletado */
+      .autocomplete-container {
+        position: relative;
+        width: 100%;
+      }
+
+      .autocomplete-input {
+        width: 100%;
+      }
+
+      .autocomplete-list {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: white;
+        border: 1px solid #ccc;
+        border-top: none;
+        border-radius: 0 0 6px 6px;
+        max-height: 200px;
+        overflow-y: auto;
+        z-index: 1000;
+        display: none;
+        box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+      }
+
+      .autocomplete-list.active {
+        display: block;
+      }
+
+      .autocomplete-item {
+        padding: 12px;
+        cursor: pointer;
+        border-bottom: 1px solid #eee;
+        transition: background 0.2s ease;
+      }
+
+      .autocomplete-item:hover {
+        background: #f0f0f0;
+      }
+
+      .autocomplete-item.selected {
+        background: #00c2b8;
+        color: white;
+      }
+
+      .autocomplete-item:last-child {
+        border-bottom: none;
+      }
     </style>
   </head>
 
@@ -164,12 +214,17 @@
                 margin-bottom: 15px;
               "
             >
-              <input
-                class="input-form"
-                type="text"
-                name="producto"
-                placeholder="Producto"
-              />
+              <div class="autocomplete-container" style="flex: 1; min-width: 150px;">
+                <input
+                  class="input-form autocomplete-input"
+                  type="text"
+                  name="producto"
+                  id="producto-input"
+                  placeholder="Producto"
+                  autocomplete="off"
+                />
+                <div class="autocomplete-list" id="productos-list"></div>
+              </div>
 
               <input
                 class="input-form"
@@ -232,5 +287,121 @@
         </div>
       </section>
     </div>
+
+    <script>
+      // Función de autocompletado para productos
+      const productoInput = document.getElementById('producto-input');
+      const productosList = document.getElementById('productos-list');
+      let timeoutId;
+      let selectedIndex = -1;
+      let productos = [];
+
+      // Buscar productos cuando el usuario escribe
+      productoInput.addEventListener('input', function() {
+        const query = this.value.trim();
+
+        // Limpiar timeout anterior
+        clearTimeout(timeoutId);
+
+        // Limpiar lista anterior
+        productosList.innerHTML = '';
+        selectedIndex = -1;
+        productos = [];
+
+        if (query.length >= 1) {
+          // Esperar 300ms antes de hacer la búsqueda
+          timeoutId = setTimeout(() => {
+            fetch(`/pageEntradasSalidas/buscar_productos/?q=${encodeURIComponent(query)}`)
+              .then(response => response.json())
+              .then(data => {
+                productos = data;
+                productosList.innerHTML = '';
+
+                if (productos.length > 0) {
+                  // Crear elementos para cada producto
+                  productos.forEach((producto, index) => {
+                    const div = document.createElement('div');
+                    div.className = 'autocomplete-item';
+                    div.textContent = producto;
+                    div.setAttribute('data-index', index);
+
+                    // Al hacer clic, seleccionar el producto
+                    div.addEventListener('click', () => {
+                      productoInput.value = producto;
+                      productosList.classList.remove('active');
+                      productosList.innerHTML = '';
+                    });
+
+                    // Al pasar el mouse, marcar como seleccionado
+                    div.addEventListener('mouseover', () => {
+                      document.querySelectorAll('.autocomplete-item').forEach(item => {
+                        item.classList.remove('selected');
+                      });
+                      div.classList.add('selected');
+                      selectedIndex = index;
+                    });
+
+                    productosList.appendChild(div);
+                  });
+
+                  productosList.classList.add('active');
+                }
+              })
+              .catch(error => {
+                console.error('Error al buscar productos:', error);
+              });
+          }, 300);
+        }
+      });
+
+      // Cerrar la lista cuando se pierde el foco
+      productoInput.addEventListener('blur', function() {
+        setTimeout(() => {
+          productosList.classList.remove('active');
+          productosList.innerHTML = '';
+        }, 200);
+      });
+
+      // Navegación con teclado
+      productoInput.addEventListener('keydown', function(e) {
+        if (productos.length === 0) return;
+
+        const items = document.querySelectorAll('.autocomplete-item');
+
+        switch(e.key) {
+          case 'ArrowDown':
+            e.preventDefault();
+            selectedIndex = Math.min(selectedIndex + 1, items.length - 1);
+            updateSelected(items);
+            break;
+          case 'ArrowUp':
+            e.preventDefault();
+            selectedIndex = Math.max(selectedIndex - 1, -1);
+            updateSelected(items);
+            break;
+          case 'Enter':
+            e.preventDefault();
+            if (selectedIndex >= 0 && selectedIndex < items.length) {
+              productoInput.value = items[selectedIndex].textContent;
+              productosList.classList.remove('active');
+              productosList.innerHTML = '';
+            }
+            break;
+          case 'Escape':
+            productosList.classList.remove('active');
+            productosList.innerHTML = '';
+            break;
+        }
+      });
+
+      function updateSelected(items) {
+        items.forEach((item, index) => {
+          item.classList.remove('selected');
+          if (index === selectedIndex) {
+            item.classList.add('selected');
+          }
+        });
+      }
+    </script>
   </body>
 </html>
